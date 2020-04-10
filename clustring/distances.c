@@ -4,7 +4,7 @@
 //#include <stdlib.h>
 //#include <math.h>
 
-double poow(double number, int n)
+unsigned char poow(unsigned char number, unsigned char n)
 {
     if(n<2)
         return number;
@@ -13,39 +13,62 @@ double poow(double number, int n)
 }
 
 
-double absolute(double num)
+int absolute(int num)
 {
-    double tab[2] = {num, -num};
+    int tab[2] = {num, -num};
     
     return tab[num<0];
 }
 
-
-double euclidean(double *vectorOne, double *vectorTwo, int vectorSize)
+int substraction(unsigned char a, unsigned char b)
 {
-    double distance = 0;
+    int aa = a;
+    int bb = b;
     
+    return aa-bb;
+}
+
+
+char euclidean(char *vectorOne,char *vectorTwo, int vectorSize)
+{
+    int distance = 0;
+
     for(int v=0; v<vectorSize; v++)
-    {
         distance += poow(*(vectorOne + v) - *(vectorTwo + v), 2);
-    }
     
     return sqrt(distance);
 }
 
-double manhattan(double *vectorOne, double *vectorTwo, int vectorSize)
+unsigned int manhattan(unsigned char* vectorOne, unsigned char* vectorTwo, int vectorSize)
 {
-    double distance = 0;
+    unsigned int distance = 0;
     
     for(int v=0; v<vectorSize; v++)
     {
-        distance += absolute(*(vectorOne + v) - *(vectorTwo + v));
+        distance += absolute(substraction(*(vectorOne + v), *(vectorTwo + v)));
     }
     
     return distance;
 }
 
-
+//Cosine distance for positive numbers
+double cosineDis(int dimension, double* x, double* y)
+{
+    double numerator;
+    double x_2, y_2;
+    
+    numerator = x_2 = y_2 = 0;
+    
+    for(int q=0; q<dimension; q++)
+    {
+        numerator += *(x+q) * (*(y+q));
+        x_2 += pow(*(x+q), 2);
+        y_2 += pow(*(y+q), 2);
+    }
+    
+    return numerator/(sqrt(x_2)*sqrt(y_2));
+    
+}
 
 //int main(int args, char** argv)
 //{

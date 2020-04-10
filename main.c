@@ -32,13 +32,13 @@ int main(int args,char** argv){
 
     
     //////////// RGB IMAGE'S PROCESS ////////////////
-    imagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(struct PIXEL));
-    fillPixel(opn, imagePixels, infoHeader.imageSize, header.dataOffset);
+//    imagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(struct PIXEL));
+//    fillPixel(opn, imagePixels, infoHeader.imageSize, header.dataOffset);
     
     
     //////////// GRAY IMAGE'S PROCESS ////////////////
-//    grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
-//    fillGrayPixel(opn, grayImagePixels, header.fileSize - 54, header.dataOffset);
+    grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
+    fillGrayPixel(opn, grayImagePixels, header.fileSize - 54, header.dataOffset);
 
     
 //    convertImage(argv[1]);
@@ -47,9 +47,12 @@ int main(int args,char** argv){
 //    applyFilter(argv[1], idd(), 5, 5, 1, "_identity");
 //    applyFilter(argv[1], laplacien(), 3, 3, 1, "_identity");
 //     applyFilterGray(argv[1], idd(), 5, 5, 1, "_identity");
-//    applyFilterGray(argv[1], identity(), 3, 3, 1, "_identity");
+    applyFilterGray(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
 //    colorToGray(argv[1]);
-    rgbSplit(argv[1]);
+//    rgbSplit(argv[1]);
+    
+//    apply_k(file, clusters, max_iteration);
+//    apply_k(argv[1], 28, 6);
 //    imageDescriptor(argv[1]);
     
     

@@ -1,6 +1,6 @@
 #include "cluster.h"
 
-int existsInArray(double *tab, double num, int size)
+int existsInArray(unsigned char *tab, unsigned char num, int size)
 {
     for(int u=0; u<size; u++)
         if(*(tab+u)==num)
@@ -10,21 +10,17 @@ int existsInArray(double *tab, double num, int size)
 }
 
 
-//double* random(int size)
-//{
-//    double *randoms = malloc(sizeof(double)*size);
-//    
-//    for(int t=0; t<size; t++)
-//    {
-//        
-//    }
-//    
-//    return randoms;
-//}
-
-
-int main(int args, char** argv)
+unsigned char* rando(int size)
 {
-    printf("Random number %d\n", rand());
-    return 0;
+    unsigned char *rands = malloc(sizeof(char)*size);
+    
+    srand(time(NULL));
+    for(int t=0; t<size; t++)
+    {
+        do{
+            *(rands+t) = (unsigned char)(rand()%255);
+        }while(existsInArray(rands, rand(), t+1));
+    }
+    
+    return rands;
 }

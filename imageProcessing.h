@@ -6,5 +6,6 @@
 #include "./helpingMethods/helpingMethods.h"
 #include "./filters/filters.h"
 #include "./transformations/transformations.h"
+#include "./clustring/cluster.h"
 
 #endif

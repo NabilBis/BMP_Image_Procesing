@@ -40,7 +40,7 @@ void fillPixel(int fileDsc, struct PIXEL *image, unsigned int imageSize, int dat
     for(int i=0; i<imageSize; i++){
         rf = read(fileDsc,buffer,1);
         if(rf<1){
-            printf("Could not read from file at position %d\n",i);
+            printf("Could not read from file at position %d\nfrom fillPixel function\n",i);
             break;
         }
         switch (i%3) {
@@ -71,7 +71,7 @@ void fillGrayPixel(int fileDsc, unsigned char *image, unsigned int imageSize,int
     for(int i=0; i<imageSize; i++){
         rf = read(fileDsc,buffer,1);
         if(rf<1){
-            printf("Could not read from file at position %d\n",i);
+            printf("Could not read from file at position %d\n from fillGrayPixel\n",i);
             break;
         }
     

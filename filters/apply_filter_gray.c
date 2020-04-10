@@ -16,7 +16,8 @@ unsigned char gray_filter(unsigned char *pixels, int *filterMatrix, int width, i
 }
 
 
-void applyFilterGray(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName){
+void applyFilterGray(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName)
+{
     extern struct BMPHeader header;
     extern struct BMPINFOHEADER infoHeader;
     extern unsigned char  *grayImagePixels;
