@@ -2,8 +2,7 @@
 #define transformations_h
 
 #include "../global.h"
-void duplicateFile(char* file);
-void convertImage(char* file);
+void to_bmp_iv4(char* file);
 void scale_x2(char* file);
 void colorToGray(char* file);
 void rgbSplit(char* file);

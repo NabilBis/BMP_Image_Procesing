@@ -1,7 +1,7 @@
 #include "transformations.h"
 
-void fillRGBColorPalette(int fileDescriptor, int color){
-    
+void fillRGBColorPalette(int fileDescriptor, int color)
+{
     int cero = 0;
     int blue, green, red;
     int limit = 256;
@@ -23,7 +23,8 @@ void fillRGBColorPalette(int fileDescriptor, int color){
 
 
 
-void rgbSplit(char* file){
+void rgbSplit(char* file)
+{
     extern struct BMPHeader header;
     extern struct BMPINFOHEADER infoHeader;
     extern struct PIXEL *imagePixels;
@@ -38,6 +39,7 @@ void rgbSplit(char* file){
     int desciptors[3];
     int imageSi;
     int fileSi;
+    char padd = 0;
     struct PIXEL neutralPixel = {.blue = 255, .green = 255, .red = 255 };
     
     imageSi = infoHeader.width*infoHeader.height;
@@ -104,11 +106,39 @@ void rgbSplit(char* file){
         fillRGBColorPalette(desciptors[a], a+1);
     }
     
-    for(int pixelIterator=0; pixelIterator<(infoHeader.imageSize/3);pixelIterator++){
+//    for(int pixelIterator=0; pixelIterator<(infoHeader.imageSize/3);pixelIterator++){
+//        
+//        editByte(opnBlue, (char*)&((*(imagePixels+pixelIterator)).blue));
+//        editByte(opnGreen, (char*)&((*(imagePixels+pixelIterator)).green));
+//        editByte(opnRed, (char*)&((*(imagePixels+pixelIterator)).red));
+//    }
+    
+//    printf("Height = %d, width = %d\n", infoHeader.height, infoHeader.width);
+    
+    for(int h=0; h<infoHeader.height; h++)
+    {
+//        for(int p=0; p<(infoHeader.width%4); p++)
+//        {
+//            printf("Dkhel\n");
+//            editByte(opnBlue, (char*)&reservedHeaderBytes);
+//            editByte(opnGreen, (char*)&reservedHeaderBytes);
+//            editByte(opnRed, (char*)&reservedHeaderBytes);
+//        }
         
-        editByte(opnBlue, (char*)&((*(imagePixels+pixelIterator)).blue));
-        editByte(opnGreen, (char*)&((*(imagePixels+pixelIterator)).green));
-        editByte(opnRed, (char*)&((*(imagePixels+pixelIterator)).red));
+        for(int w=0; w<infoHeader.width; w++)
+        {
+            editByte(opnBlue, (char*)&((*(imagePixels+h*infoHeader.width+w)).blue));
+            editByte(opnGreen, (char*)&((*(imagePixels+h*infoHeader.width+w)).green));
+            editByte(opnRed, (char*)&((*(imagePixels+h*infoHeader.width+w)).red));
+        }
+
+
+        for(int p=0; p<(infoHeader.width*3)%4; p++)
+        {
+            editByte(opnBlue, (char*)&reservedHeaderBytes);
+            editByte(opnGreen, (char*)&reservedHeaderBytes);
+            editByte(opnRed, (char*)&reservedHeaderBytes);
+        }
     }
     
     

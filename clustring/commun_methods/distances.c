@@ -1,4 +1,4 @@
-#include "cluster.h"
+#include "../cluster.h"
 
 //#include <stdio.h>
 //#include <stdlib.h>

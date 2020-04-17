@@ -1,6 +1,5 @@
 #include "cluster.h"
 
-
 void apply_k(char* file, int means_size, int max_iteration)
 {
     extern struct BMPHeader header;
@@ -25,7 +24,7 @@ void apply_k(char* file, int means_size, int max_iteration)
     
     imageSi = infoHeader.width*infoHeader.height;
     fileSi = imageSi + header.dataOffset;
-
+    
     mapping = malloc(sizeof(int)*imageSi);
     
     
@@ -55,7 +54,7 @@ void apply_k(char* file, int means_size, int max_iteration)
     editTwoBytes(opn, (short*)&(infoHeader.planes));
     editTwoBytes(opn, &bitPerPixel);
     editFourBytes(opn, (int*)&(infoHeader.compression));
-    editFourBytes(opn, &reservedHeaderBytes);
+    editFourBytes(opn, &imageSi);
     editFourBytes(opn, &(infoHeader.xPixelsPerM));
     editFourBytes(opn, &(infoHeader.yPixelsPerM));
     editFourBytes(opn, (int*)&(infoHeader.colorUsed));
@@ -63,20 +62,28 @@ void apply_k(char* file, int means_size, int max_iteration)
     
     
     fillColorPalette(opn);
-    
-    
+
     
     k_means(grayImagePixels, imageSi, means_size, centroids, max_iteration, mapping, avg_dists, cluster_members_count);
     
 
-    for(int i=0; i<infoHeader.width; i++)
+
+    for(int h=0; h<infoHeader.height; h++)
     {
-        for(int j=0; j<infoHeader.height; j++)
+        for(int w=0; w<infoHeader.width; w++)
         {
-            editByte(opn, (char*)(centroids + *(mapping + i*infoHeader.width + j)));
+            editByte(opn, (char*)(centroids + *(mapping + h*infoHeader.width+w)));
+        }
+        
+        for(int p=0; p<(infoHeader.width*3)%4; p++)
+        {
+            editByte(opn, (char*)&reservedHeaderBytes);
         }
     }
-    
-    
+//    for(int s=0; s<imageSi; s++)
+//    {
+//        editByte(opn, (char*)(centroids + *(mapping + s)));
+//    }
+//    
     close(opn);
 }

@@ -28,18 +28,20 @@ void applyFilterGray(char* file, int *filterMatrix, int width, int height, doubl
     char *imageCopy;
     int imageSi;
     int fileSi;
+    int palette_size = 1024;
     unsigned char *arrPixel;
     unsigned char tmpPixel;
     unsigned char gray_byte;
     int filterWidth, filterHeight, filterMid;
+    int i,j;
     
     filterWidth = filterHeight = 0;
     filterMid = width/2;
     
-    arrPixel = malloc(9*sizeof(unsigned char));
+    arrPixel = malloc(width*height*sizeof(unsigned char));
     
     imageSi = infoHeader.width*infoHeader.height;
-    fileSi = imageSi + header.dataOffset;
+    fileSi = imageSi + 54 + palette_size; //// Why 54 : to force the version
     
     concactStr(substractExtension(file), filterName, &imageCopy);
     concactStr(imageCopy, ".bmp", &imageCopy);
@@ -72,7 +74,7 @@ void applyFilterGray(char* file, int *filterMatrix, int width, int height, doubl
     editTwoBytes(opn, (short*)&(infoHeader.planes));
     editTwoBytes(opn, &bitPerPixel);
     editFourBytes(opn, (int*)&(infoHeader.compression));
-    editFourBytes(opn, &reservedHeaderBytes);
+    editFourBytes(opn, &imageSi);
     editFourBytes(opn, &(infoHeader.xPixelsPerM));
     editFourBytes(opn, &(infoHeader.yPixelsPerM));
     editFourBytes(opn, (int*)&(infoHeader.colorUsed));
@@ -81,9 +83,11 @@ void applyFilterGray(char* file, int *filterMatrix, int width, int height, doubl
     
     fillColorPalette(opn);
     
-    for(int i=0; i<infoHeader.width; i++){
-        for(int j=0; j<infoHeader.height; j++){
-            if(i==0 || j==0 || i==(infoHeader.width-1) || j==(infoHeader.height-1))
+    for( i=0; i<infoHeader.height; i++)
+    {
+        for( j=0; j<infoHeader.width; j++)
+        {
+            if(i<filterMid || j<filterMid || i>=(infoHeader.height-filterMid) || j>=(infoHeader.width-filterMid))
             {
                 editByte(opn, (char *)&*(grayImagePixels + i*infoHeader.width + j));
             } else {
@@ -105,10 +109,17 @@ void applyFilterGray(char* file, int *filterMatrix, int width, int height, doubl
                 }
                 
                 tmpPixel = gray_filter(arrPixel, filterMatrix, width, height, coefficient);
+
                 editByte(opn, (char *)&tmpPixel);
             }
         }
+        
+        for(int p=0; p<(infoHeader.width*3)%4; p++)
+        {
+            editByte(opn, (char*)&reservedHeaderBytes);
+        }
     }
+
      ////////////// MEMORY LEAKS
 //    free(arrPixel);
     close(opn);

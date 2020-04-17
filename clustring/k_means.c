@@ -1,5 +1,11 @@
 #include "cluster.h"
 
+
+///////// How to adapt k-means to a given scenario
+///// By editing:   1. Distance function (fitness function)
+/////               2. Stop condition (recursion)
+/////               3. Average computation methodS (Must be other ways to define new centroids in each iteration)
+
 unsigned int dist = 0;
 int cluster_index=0;
 
@@ -12,13 +18,12 @@ void k_means(unsigned char* data, int dataSize, int means, unsigned char* centro
     if(max_iterations==0)
         return ;
     
-    printf("           Iteration n %d\n", max_iterations);
+    printf(" Iteration n %d\n", max_iterations);
     
     for(int e=0; e<means; e++)
     {
         *(avg_dists+e) = *(cluster_members_count+e)= 0;
     }
-
     for(int y=0; y<dataSize; y++)
     {
         dist = manhattan(data+y, centroids, 1);
@@ -51,6 +56,7 @@ void k_means(unsigned char* data, int dataSize, int means, unsigned char* centro
         *(centroids+m) = (unsigned char)divided_dist;
     }
 
+    
     k_means(data, dataSize, means, centroids, max_iterations-1, point_mapping, avg_dists, cluster_members_count);
 }
 

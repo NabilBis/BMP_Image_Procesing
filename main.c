@@ -6,7 +6,8 @@ void printInfoHeader(struct BMPINFOHEADER infoHeader);
 void printImagePixels(struct PIXEL *image);
 
 
-int main(int args,char** argv){
+int main(int args,char** argv)
+{
     clock_t begin = clock();
     int fileSize=0;
     ssize_t rf;
@@ -14,52 +15,57 @@ int main(int args,char** argv){
     extern struct BMPINFOHEADER infoHeader;
     extern struct PIXEL *imagePixels;
     extern unsigned char  *grayImagePixels;
-//    char *chPointer;
+    
+    char gray_scale = 10;
+    
     int opn = open(argv[1], O_RDWR, 0644);
     
     if(opn<1){
         printf("Couldnt read nor create file %s\n",argv[1]);
         return 0;
     }
-    printf("\n");
     
     bmpHeader(opn, &fileSize, &header);
     bmpInfoHeader(opn, &fileSize, &infoHeader);
     
+    printf("\n");
     printHeader(header);
     printf("-------------- --------- ---------------\n");
     printInfoHeader(infoHeader);
 
     
-    //////////// RGB IMAGE'S PROCESS ////////////////
-//    imagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(struct PIXEL));
-//    fillPixel(opn, imagePixels, infoHeader.imageSize, header.dataOffset);
-    
-    
-    //////////// GRAY IMAGE'S PROCESS ////////////////
-    grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
-    fillGrayPixel(opn, grayImagePixels, header.fileSize - 54, header.dataOffset);
-
-    
-//    convertImage(argv[1]);
-//    scale_x2(argv[1]);
-    
-//    applyFilter(argv[1], idd(), 5, 5, 1, "_identity");
-//    applyFilter(argv[1], laplacien(), 3, 3, 1, "_identity");
-//     applyFilterGray(argv[1], idd(), 5, 5, 1, "_identity");
-    applyFilterGray(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
-//    colorToGray(argv[1]);
-//    rgbSplit(argv[1]);
-    
-//    apply_k(file, clusters, max_iteration);
-//    apply_k(argv[1], 28, 6);
-//    imageDescriptor(argv[1]);
-    
-    
+    if(gray_scale) //////////// GRAY IMAGE'S PROCESS ////////////////
+    {
+            grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
+//            fillGrayPixel(opn, grayImagePixels, infoHeader.imageSize, header.dataOffset);
+            get_gray_pixels(opn, grayImagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
+        
+//            applyFilterGray(argv[1], identity(), 3, 3, 1, "_identity");
+//            applyFilterGray(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
+//            applyFilterGray(argv[1], rotation(), 2, 2, 1, "_rotation");
+        
+        
+        //    apply_k(file, clusters, max_iteration);
+            apply_k(argv[1], 10, 25);
+        
+        
+    }//////////// RGB IMAGE'S PROCESS ////////////////
+    else {
+        
+        imagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(struct PIXEL));
+        get_image_pixels(opn, imagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
+        
+//        to_bmp_iv4(argv[1]);
+//            scale_x2(argv[1]);
+//            applyFilter(argv[1], identity(), 3, 3, 1, "_identity");
+        //    applyFilter(argv[1], rotation(), 2, 2, 1, "_rotation");
+//            colorToGray(argv[1]);
+//            rgbSplit(argv[1]);
+    }
     
     ////////////// FREE MEMORY IN HERE ////////////////
     //////                                 ///////////
-    //////                                 //////////
+    //////               ICI               //////////
     //////                                 /////////
     ///////////////////////////////////////////////
     close(opn);
@@ -77,13 +83,15 @@ int main(int args,char** argv){
 
 
 
-void printHeader(struct BMPHeader header){
+void printHeader(struct BMPHeader header)
+{
     printf("Signature:   %c%c\n", header.signature[0], header.signature[1]);
-    printf("Image size:  %u bytes\n", header.fileSize);
+    printf("File size:  %u bytes\n", header.fileSize);
     printf("DataOffset:  %u bytes\n", header.dataOffset);
 }
 
-void printInfoHeader(struct BMPINFOHEADER infoHeader){
+void printInfoHeader(struct BMPINFOHEADER infoHeader)
+{
     printf("Info header size:  %u\n", infoHeader.infoHeaderSize);
     printf("Width :  %u\n", infoHeader.width);
     printf("Height :  %u\n", infoHeader.height);
@@ -98,8 +106,3 @@ void printInfoHeader(struct BMPINFOHEADER infoHeader){
     printf("Pixels per inch: %d\n", infoHeader.xPixelsPerM/39);
 }
 
-void printImagePixels(struct PIXEL *image){
-    for(int i=0; i<20; i++){
-        printf("%d ", (*(image+i)).blue);
-    }
-}

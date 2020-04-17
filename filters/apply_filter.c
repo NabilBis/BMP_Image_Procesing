@@ -25,6 +25,7 @@ struct PIXEL filter(struct PIXEL *pixels, int *filterMatrix, int width, int heig
     return new;
 }
 
+///////// MUST BE IN EDITS FILE
 void editPixel(int opn, struct PIXEL p)
 {
       editByte(opn, (char*)&p.blue);
@@ -32,7 +33,8 @@ void editPixel(int opn, struct PIXEL p)
       editByte(opn, (char*)&p.red);
 }
 
-void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName){
+void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName)
+{
     extern struct BMPHeader header;
     extern struct BMPINFOHEADER infoHeader;
     extern struct PIXEL *imagePixels;
@@ -49,18 +51,20 @@ void applyFilter(char* file, int *filterMatrix, int width, int height, double co
     filterWidth = filterHeight = 0;
     filterMid = width/2;
     printf("Filer mid = %d \n\n", filterMid);
-    arrPixel = malloc(9*sizeof(struct PIXEL));
+    arrPixel = malloc(width*height*sizeof(struct PIXEL));
     
     imgSize = infoHeader.width*3*infoHeader.height;
     fileS = imgSize + header.dataOffset;
+    
     concactStr(substractExtension(file), filterName, &imageCopy);
     concactStr(imageCopy, ".bmp", &imageCopy);
+    
     int opn = open(imageCopy, O_CREAT | O_RDWR,0644);
     
 //    free(imageCopy);
     
     if(opn<1){
-        printf("Couldnt read nor create file %s\n", file);
+        printf("Couldnt read nor create file (apply filter RGB)%s\n", file);
         return;
     }
         
@@ -88,13 +92,15 @@ void applyFilter(char* file, int *filterMatrix, int width, int height, double co
     editFourBytes(opn, (int*)&(infoHeader.importantColors));
  
     
-    for(int i=0; i<infoHeader.width; i++){
-        for(int j=0; j<infoHeader.height; j++){
+    for(int i=0; i<infoHeader.height; i++)   //// h*width+w
+    {
+        for(int j=0; j<infoHeader.width; j++)
+        {
 //            if(i==0 || j==0 || i==(infoHeader.width-1) || j==(infoHeader.height-1))
-            if(i<filterMid || j<filterMid || i>=(infoHeader.width-filterMid) || j>=(infoHeader.height-filterMid))
+            if(j<filterMid || i<filterMid || j>=(infoHeader.width-filterMid) || i>=(infoHeader.height-filterMid))
             {
                 /////// write pixel
-                editPixel(opn, *(imagePixels + i*infoHeader.width + j));
+                editPixel(opn, *(imagePixels + j*infoHeader.width + i));
             } else {
 
                 for(int w=0; w < width; w++)
@@ -102,19 +108,28 @@ void applyFilter(char* file, int *filterMatrix, int width, int height, double co
                     if(filterWidth==width){
                         filterWidth=0;
                     }
+                    
                     for(int h=0; h < height; h++)
                     {
                         if(filterHeight==height){
                             filterHeight=0;
                         }
-                        *(arrPixel + w*width + h) = *(imagePixels + (i-filterWidth-width+1+filterMid)*infoHeader.width + (j-filterHeight-height+1+filterMid));
+*(arrPixel + h*width + w) = *(imagePixels + (i-filterHeight-height+1+filterMid)*infoHeader.width + (j-filterWidth-width+1+filterMid));
+                        
                         filterHeight++;
                     }
+                    
                     filterWidth++;
                 }
                 tmpPixel = filter(arrPixel, filterMatrix, width, height, coefficient);
+                
                 editPixel(opn, tmpPixel);
             }
+        }
+        //////// Padding h*width+w
+        for(int p=0; p<(infoHeader.width%4); p++)
+        {
+            editByte(opn, (char*)&reservedHeaderBytes);
         }
       }
     

@@ -3,7 +3,7 @@
 
 #include "../global.h"
 ////////// must be in a fliter header
-void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
+
 int* laplacien();
 int* sobel();
 int* lapla();
@@ -12,5 +12,9 @@ int* sharpen();
 int* edgeDetection();
 int* smoothing();
 int* idd();
+int* rotation();
+
+void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
+
 void applyFilterGray(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
 #endif

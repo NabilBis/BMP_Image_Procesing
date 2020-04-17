@@ -60,7 +60,10 @@ void bmpInfoHeader(int fileDescriptor,int *increment,struct BMPINFOHEADER* infoH
 
 
 /////// must delete
-void fillPixel(int fileDsc, struct PIXEL *image, unsigned int imageSize,int dataOffset);
-void fillGrayPixel(int fileDsc, unsigned char *image, unsigned int imageSize,int dataOffset);
+//void fillGrayPixel(int fileDsc, unsigned char *image, unsigned int imageSize,int dataOffset);
+
+//////////// MUST DELETE TOO
+void get_image_pixels(int fileDsc, struct PIXEL *image, unsigned int height, unsigned width, int dataOffset);
+void get_gray_pixels(int fileDsc, unsigned char *image, unsigned int height, unsigned width, int dataOffset);
 
 #endif

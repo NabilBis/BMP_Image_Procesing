@@ -1,4 +1,4 @@
-#include "cluster.h"
+#include "../cluster.h"
 
 int existsInArray(unsigned char *tab, unsigned char num, int size)
 {

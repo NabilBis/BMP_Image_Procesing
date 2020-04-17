@@ -1,7 +1,7 @@
 #include "helpingMethods.h"
 
-void bmpInfoHeader(int fileDescriptor,int *increment,struct BMPINFOHEADER* infoHeader){
-    
+void bmpInfoHeader(int fileDescriptor, int *increment, struct BMPINFOHEADER* infoHeader)
+{
 
     lseek(fileDescriptor,14, SEEK_SET); // positionne the cursor on the 14th position
     

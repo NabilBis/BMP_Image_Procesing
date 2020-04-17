@@ -3,7 +3,7 @@
 
 void editByte(int fileDescriptor,char *newValue){
     ssize_t wf;
-        wf = write(fileDescriptor,newValue,1);
+        wf = write(fileDescriptor, newValue, 1);
         if(wf<1){
             printf("Could not write on file \n");
             return;
