@@ -11,8 +11,6 @@ int cluster_index=0;
 
 void k_means(unsigned char* data, int dataSize, int means, unsigned char* centroids, int max_iterations, int* point_mapping, unsigned int* avg_dists, int* cluster_members_count)
 {
-    extern unsigned int dist;
-    extern int cluster_index;
     int divided_dist;
     
     if(max_iterations==0)

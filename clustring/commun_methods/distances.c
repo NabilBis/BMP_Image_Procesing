@@ -4,6 +4,8 @@
 //#include <stdlib.h>
 //#include <math.h>
 
+
+////////// Redondance
 unsigned char poow(unsigned char number, unsigned char n)
 {
     if(n<2)

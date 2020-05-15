@@ -11,6 +11,7 @@ unsigned char gray_filter(unsigned char *pixels, int *filterMatrix, int width, i
             newPixel += (*(pixels + w*width + h) * *(filterMatrix+w*width + h));
         }
     }
+    
 
     return newPixel / coefficient;
 }

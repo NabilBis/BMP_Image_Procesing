@@ -41,12 +41,15 @@ int main(int args,char** argv)
             get_gray_pixels(opn, grayImagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
         
 //            applyFilterGray(argv[1], identity(), 3, 3, 1, "_identity");
+//        applyFilterGray(argv[1], gaussian_blur(), 5, 5, 0.0039, "_blurred");
+//         applyFilterGray(argv[1], smoothing(), 3, 3, 1, "_smoothing");
 //            applyFilterGray(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
 //            applyFilterGray(argv[1], rotation(), 2, 2, 1, "_rotation");
         
         
         //    apply_k(file, clusters, max_iteration);
-            apply_k(argv[1], 10, 25);
+//            apply_k(argv[1], 2, 25);
+        apply_GMS(argv[1], 40);
         
         
     }//////////// RGB IMAGE'S PROCESS ////////////////
@@ -56,9 +59,10 @@ int main(int args,char** argv)
         get_image_pixels(opn, imagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
         
 //        to_bmp_iv4(argv[1]);
-//            scale_x2(argv[1]);
+            scale_x2(argv[1]);
+//         applyFilter(argv[1], gaussian_blur(), 5, 5, 0.0039, "_blurred");
 //            applyFilter(argv[1], identity(), 3, 3, 1, "_identity");
-        //    applyFilter(argv[1], rotation(), 2, 2, 1, "_rotation");
+//            applyFilter(argv[1], rotation(), 2, 2, 1, "_rotation");
 //            colorToGray(argv[1]);
 //            rgbSplit(argv[1]);
     }

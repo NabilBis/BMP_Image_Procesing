@@ -13,6 +13,7 @@ int* edgeDetection();
 int* smoothing();
 int* idd();
 int* rotation();
+int* gaussian_blur();
 
 void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
 
