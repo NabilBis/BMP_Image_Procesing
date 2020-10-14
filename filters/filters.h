@@ -17,5 +17,7 @@ int* gaussian_blur();
 
 void applyFilter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
 
-void applyFilterGray(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
+void apply_gray_filter(char* file, int *filterMatrix, int width, int height, double coefficient, char* filterName);
+
+void apply_filter_on_matrix(int opn, int *filterMatrix, int width, int height, double coefficient);
 #endif

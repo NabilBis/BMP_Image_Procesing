@@ -155,7 +155,3 @@ void scale_x2(char* file){
 }
 
 
-
-
-
-

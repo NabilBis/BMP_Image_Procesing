@@ -1,4 +1,5 @@
-#include "filters.h"
+#include "../filters.h"
+
 
 int* smoothing() ///// coefficient = 1
 {

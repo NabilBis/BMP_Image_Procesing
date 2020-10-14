@@ -8,6 +8,8 @@
 //#include <unistd.h>
 //#include <fcntl.h>
 #include "../global.h"
+int __optimized_dbscan_sorted_size__;
+
 
 enum DECIMALTYPE {CHAR_TYPE, SHORT_TYPE, INT_TYPE};
 
@@ -29,10 +31,13 @@ void editTwoBytes(int fileDescriptor,short *newValue);
 
 void editFourBytes(int fileDescriptor,int *newValue);
 
+void sort_gray_pixels(unsigned char *gray_sorted_pixels, int *histogram, int image_size);
+
+unsigned char* optimize_dbscan(int *histogram);
 //void fillPixel(int fileDsc, struct PIXEL *image, unsigned int imageSize,int dataOffset);
 //
 //void fillGrayPixel(int fileDsc, unsigned char *image, unsigned int imageSize,int dataOffset);
 //void editPixel(int fileDescriptor,struct PIXEL pixel);
-
+void write_bmp4_gray_headers(int opn);
 
 #endif

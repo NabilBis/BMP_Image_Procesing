@@ -1,7 +1,9 @@
 #include "cluster.h"
 
+/////////////// MUST IMPROVE THIS ALGORITHM
+////////////// CHECK THIS MAIL : https://saravananthirumuruganathan.wordpress.com/2010/04/01/introduction-to-mean-shift-algorithm/
 
-
+///////// REDONDANCE
 double eucl(double *vectorOne,double *vectorTwo, int vectorSize)
 {
     double distance = 0;
@@ -15,20 +17,26 @@ double eucl(double *vectorOne,double *vectorTwo, int vectorSize)
 
 ////////////// https://towardsdatascience.com/gaussian-mixture-models-explained-6986aaf5a95
 /////////////  http://www.cs.cmu.edu/~aarti/SMLRG/miguel_slides.pdf
-/////////// The kernel used in this algo is the GAUSSIAN KERNEL, many other kernel are present
+/////////// The kernel used in this algo is the GAUSSIAN KERNEL, many other kernels are present
 void gaussian_mean_shift(unsigned char* data, int dataSize, unsigned char* clus, unsigned char *modes, int window)
 {
     double pivot, numerateur, denominateur, unknown, dist, num;
     double condition = 0.001;
+    double* densities = malloc(256*sizeof(double));
     int index;
     
-    printf("Clusters dimension  : %d \n", 256/window+1);
-    
 
+    for(int d=0; d<256; d++)
+        *(densities+d) = -1.0;
+    
+    
 
     for(int y=0; y<dataSize; y++)
     {
         pivot = (double)(*(data +y));
+        
+        if(*(densities+(int)(*(data +y)))==-1.0)
+        {
         
         do {
             for(int l=0; l<dataSize; l++)
@@ -51,13 +59,14 @@ void gaussian_mean_shift(unsigned char* data, int dataSize, unsigned char* clus,
             }
         } while (pivot < condition);
         
-//        printf("Index = %d\n", index);
-        printf("%d\n", y);
-        *(clus + y) = (unsigned char)index;
+            *(densities+(int)(*(data +y))) = pivot;
+        } /////// END OF CONDITION
+    
+//        *(clus + y) = (unsigned char)index;
+        *(clus + y) = (unsigned char)(*(data +y)/window);
         dist = numerateur = denominateur = unknown = 0;
     }
     
-        printf("\n");
 
 }
 

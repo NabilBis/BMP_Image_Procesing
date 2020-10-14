@@ -16,6 +16,8 @@ int main(int args,char** argv)
     extern struct PIXEL *imagePixels;
     extern unsigned char  *grayImagePixels;
     
+    int start_x, start_y;
+    
     char gray_scale = 10;
     
     int opn = open(argv[1], O_RDWR, 0644);
@@ -36,22 +38,38 @@ int main(int args,char** argv)
     
     if(gray_scale) //////////// GRAY IMAGE'S PROCESS ////////////////
     {
-            grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
-//            fillGrayPixel(opn, grayImagePixels, infoHeader.imageSize, header.dataOffset);
-            get_gray_pixels(opn, grayImagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
+        grayImagePixels = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
         
-//            applyFilterGray(argv[1], identity(), 3, 3, 1, "_identity");
-//        applyFilterGray(argv[1], gaussian_blur(), 5, 5, 0.0039, "_blurred");
-//         applyFilterGray(argv[1], smoothing(), 3, 3, 1, "_smoothing");
-//            applyFilterGray(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
-//            applyFilterGray(argv[1], rotation(), 2, 2, 1, "_rotation");
+            ///////////////////
+        gray_image_sorted = malloc(infoHeader.width*infoHeader.height*sizeof(unsigned char));
         
+        histogram = calloc(256, sizeof(int));
+
         
-        //    apply_k(file, clusters, max_iteration);
-//            apply_k(argv[1], 2, 25);
-        apply_GMS(argv[1], 40);
+        get_gray_pixels(opn, grayImagePixels, histogram, infoHeader.height, infoHeader.width, header.dataOffset);
         
+        start_x = infoHeader.height/3;
+        start_y = infoHeader.height/3;
+//        gray_image_sorted = optimize_dbscan(histogram);
         
+//        printf("Image size = %d\n", infoHeader.width*infoHeader.height);
+//        sort_gray_pixels(gray_image_sorted, histogram, infoHeader.width*infoHeader.height);
+//            apply_gray_filter(argv[1] , identity(), 3, 3, 1, "_identity");
+//            rotate_90(argv[1]);
+        mask(argv[1], argv[2], start_x, start_y);
+//        cut(argv[1], start_x, start_y, start_x*2, start_y*2);
+//            apply_gray_filter(argv[1], gaussian_blur(), 5, 5, 0.0039, "_blurred");
+//            apply_gray_filter(argv[1], smoothing(), 3, 3, 1, "_smoothing");
+//            apply_gray_filter(argv[1], edgeDetection(), 3, 3, 1, "_edgeDetect");
+//            apply_gray_filter(argv[1], rotation(), 2, 2, 1, "_rotation");
+        
+//            for(int y=0; y<256; y++)
+//                printf("Case = %d ---> %d\n",y, *(histogram+y));
+        
+//            apply_k(file, clusters, max_iteration);
+//            apply_k(argv[1], 5, 25);
+//            apply_GMS(argv[1], 44);
+//             apply_DBSCAN(argv[1], 2, 440);
     }//////////// RGB IMAGE'S PROCESS ////////////////
     else {
         
@@ -59,11 +77,11 @@ int main(int args,char** argv)
         get_image_pixels(opn, imagePixels, infoHeader.height, infoHeader.width, header.dataOffset);
         
 //        to_bmp_iv4(argv[1]);
-            scale_x2(argv[1]);
+//            scale_x2(argv[1]);
 //         applyFilter(argv[1], gaussian_blur(), 5, 5, 0.0039, "_blurred");
 //            applyFilter(argv[1], identity(), 3, 3, 1, "_identity");
 //            applyFilter(argv[1], rotation(), 2, 2, 1, "_rotation");
-//            colorToGray(argv[1]);
+            colorToGray(argv[1]);
 //            rgbSplit(argv[1]);
     }
     
@@ -73,7 +91,7 @@ int main(int args,char** argv)
     //////                                 /////////
     ///////////////////////////////////////////////
     close(opn);
-    printf("\nRead bytes:  %d\n",fileSize);
+    printf("\nRead bytes:  %d\n", fileSize);
     
     clock_t end = clock();
     

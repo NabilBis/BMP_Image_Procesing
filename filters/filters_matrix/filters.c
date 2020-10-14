@@ -1,4 +1,5 @@
-#include "filters.h"
+#include "../filters.h"
+
 
 
 int* laplacien() ///// coefficient = 1

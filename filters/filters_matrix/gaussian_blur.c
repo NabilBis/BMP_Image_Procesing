@@ -1,4 +1,5 @@
-#include "filters.h"
+#include "../filters.h"
+
 
 
 int* gaussian_blur()///// coefficient 1/273

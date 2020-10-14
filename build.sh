@@ -1,1 +1,16 @@
-gcc main.c filters/apply_filter_gray.c filters/apply_filter.c helpingMethods/concatBytes.c helpingMethods/binary.c helpingMethods/bmpHeader.c helpingMethods/bmpInfoHeader.c helpingMethods/fileExtension.c helpingMethods/edits.c helpingMethods/pixelTable.c filters/filters.c filters/identity.c filters/laplacien.c filters/gaussian_blur.c filters/edgeDetect.c filters/id.c filters/rotation.c filters/smooth.c transformations/convertToGray.c transformations/rgbSplit.c  transformations/bmp_iv4.c transformations/scale_2x.c clustring/apply_kmeans.c clustring/commun_methods/random.c clustring/commun_methods/distances.c clustring/k_means.c clustring/gaussian_mean_shift.c clustring/gaussian_kernel.c clustring/apply_GMS.c -o out
+#!/bin/bash
+
+func=""
+
+for path in $(find . -name "compile.txt")
+do
+    value=$(<$path)
+    y=${path%compile*}
+    for f in $(echo $value)
+    do
+        func+="$y$f "
+    done
+done
+
+cmd="gcc $func -o out"
+$cmd

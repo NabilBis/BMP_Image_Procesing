@@ -48,13 +48,14 @@ void get_image_pixels(int fileDsc, struct PIXEL *image, unsigned int height, uns
 
 
 
-void get_gray_pixels(int fileDsc, unsigned char *image, unsigned int height, unsigned width, int dataOffset)
+void get_gray_pixels(int fileDsc, unsigned char *image, int *histogram, unsigned int height, unsigned width, int dataOffset)
 {
     
     size_t rf;
     unsigned char *buffer = malloc(sizeof(char));
     
     lseek(fileDsc, dataOffset, SEEK_SET);
+    
     
     
     for(int h=0; h<height; h++) /// h*width + w
@@ -68,7 +69,9 @@ void get_gray_pixels(int fileDsc, unsigned char *image, unsigned int height, uns
                     break;
                 }
                 
-                *(image+h*width + w) = *buffer;
+                *(image + h*width + w) = *buffer;
+            //////////// FILL ARRAY TO SORT
+                (*(histogram + *buffer))++;
             
         }
         

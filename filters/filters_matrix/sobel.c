@@ -1,4 +1,5 @@
-#include "filters.h"
+#include "../filters.h"
+
 
 int* sobel() ///// coefficient = 1
 {

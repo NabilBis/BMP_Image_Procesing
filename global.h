@@ -53,6 +53,9 @@ struct PIXEL {
 }*imagePixels;
 
 unsigned char  *grayImagePixels;
+unsigned char  *gray_image_sorted;/////// WHY NEW ARRAY : the order of the pixels(image) must remain the same.
+int *histogram;
+
 
 void bmpHeader(int fileDescriptor,int *increment,struct BMPHeader* header);
 void bmpInfoHeader(int fileDescriptor,int *increment,struct BMPINFOHEADER* infoHeader);
@@ -64,6 +67,6 @@ void bmpInfoHeader(int fileDescriptor,int *increment,struct BMPINFOHEADER* infoH
 
 //////////// MUST DELETE TOO
 void get_image_pixels(int fileDsc, struct PIXEL *image, unsigned int height, unsigned width, int dataOffset);
-void get_gray_pixels(int fileDsc, unsigned char *image, unsigned int height, unsigned width, int dataOffset);
+void get_gray_pixels(int fileDsc, unsigned char *image, int *histogram, unsigned int height, unsigned width, int dataOffset);
 
 #endif
